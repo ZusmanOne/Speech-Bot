@@ -1,0 +1,8 @@
+environs==9.5.0
+google-api-core==2.10.0
+google-auth==2.11.0
+google-cloud-core==2.3.2
+google-cloud-dialogflow==2.15.1
+google-cloud-storage==2.5.0
+pyTelegramBotAPI==4.7.0
+python-telegram-bot==13.12
