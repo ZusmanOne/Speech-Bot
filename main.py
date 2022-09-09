@@ -15,9 +15,9 @@ def process_start_command(message):
 
 
 @bot.message_handler(content_types=['text'])
-def send_user_text(message, project_id=env('PROJECT_ID')):
+def send_user_text(message, project_id=env('PROJECT_ID'), session_id=env('TG_CHAT_ID')):
     session_client = dialogflow.SessionsClient()
-    session = session_client.session_path(project_id, message.chat.id)
+    session = session_client.session_path(project_id, session_id)
     text_input = dialogflow.TextInput(text=message.text, language_code='ru')
     query_input = dialogflow.QueryInput(text=text_input)
     response = session_client.detect_intent(
