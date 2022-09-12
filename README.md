@@ -35,7 +35,7 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-Создайте файл `.env` в корне каталога `Speech-Bot/` со следующими настройками:
+Создайте файл `.env` в корне каталога `Speech-Bot/`  со следующими настройками:
 
 - `GOOGLE_APPLICATION_CREDENTIALS` — указать путь расположения этого json файла для этого потребуется создать [Google-проект](https://console.cloud.google.com/).
 - `PROJECT_ID` — выдается при создании Google-проекта
