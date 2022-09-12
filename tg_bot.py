@@ -1,7 +1,10 @@
 import telebot
 from environs import Env
 from google.cloud import dialogflow
+from custom_handler import TelegramHandler
+import logging
 
+logger = logging.getLogger(__file__)
 
 env = Env()
 env.read_env()
@@ -24,6 +27,7 @@ def send_user_text(message, project_id=env('PROJECT_ID'), session_id=env('TG_CHA
         request={"session": session, "query_input": query_input}
     )
     if response.query_result.intent.is_fallback:
+        logger.info('Нет ответа на вопрос,разберись сам')
         return None
     else:
         text = response.query_result.fulfillment_text
@@ -31,4 +35,8 @@ def send_user_text(message, project_id=env('PROJECT_ID'), session_id=env('TG_CHA
 
 
 if __name__ == '__main__':
+    chat_id = env('TG_CHAT_ID')
+    log_bot = telebot.TeleBot(tg_token)
+    logger.addHandler(TelegramHandler(log_bot,chat_id))
+    logger.setLevel('INFO')
     bot.infinity_polling()
