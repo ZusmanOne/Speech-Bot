@@ -17,8 +17,11 @@ def send_user_text(event, vk_api, project_id=env('PROJECT_ID')):
     response = session_client.detect_intent(
         request={"session": session, "query_input": query_input}
     )
-    texts = response.query_result.fulfillment_text
-    vk_api.messages.send(user_id=event.user_id, message=texts, random_id=random.randint(1,1000))
+    if response.query_result.intent.is_fallback:
+        return None
+    else:
+        text = response.query_result.fulfillment_text
+        vk_api.messages.send(user_id=event.user_id, message=text, random_id=random.randint(1, 1000))
 
 
 if __name__ == '__main__':
@@ -27,4 +30,4 @@ if __name__ == '__main__':
     longpoll = VkLongPoll(vk_session)
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            send_user_text(event,vk_api)
+            send_user_text(event, vk_api)

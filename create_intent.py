@@ -2,10 +2,6 @@ import json
 from google.cloud import dialogflow
 from environs import Env
 
-env = Env()
-env.read_env()
-project_id = env('PROJECT_ID')
-
 
 def create_intent():
     """Create an intent of the given intent type."""
@@ -17,7 +13,7 @@ def create_intent():
     parent = dialogflow.AgentsClient.agent_path(project_id)
     training_phrases = []
     response_messages = []
-    for training_phrases_part,val in training_phrases_parts.items():
+    for training_phrases_part, val in training_phrases_parts.items():
         for item in val['questions']:
             part = dialogflow.Intent.TrainingPhrase.Part(text=item)
             training_phrase = dialogflow.Intent.TrainingPhrase(parts=[part])
@@ -25,7 +21,7 @@ def create_intent():
         text = dialogflow.Intent.Message.Text(text=[val['answer']])
         message = dialogflow.Intent.Message(text=text)
         response_messages.append(message)
-    display_name = 'Как устроиться к вам на работу'
+    display_name = 'Ка!к устроиться к вам на работу'
     intent = dialogflow.Intent(
         display_name=display_name, training_phrases=training_phrases, messages=response_messages
     )
@@ -36,4 +32,7 @@ def create_intent():
 
 
 if __name__ == '__main__':
+    env = Env()
+    env.read_env()
+    project_id = env('PROJECT_ID')
     create_intent()

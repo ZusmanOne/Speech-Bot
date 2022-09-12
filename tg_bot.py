@@ -23,8 +23,11 @@ def send_user_text(message, project_id=env('PROJECT_ID'), session_id=env('TG_CHA
     response = session_client.detect_intent(
         request={"session": session, "query_input": query_input}
     )
-    texts = response.query_result.fulfillment_text
-    bot.send_message(message.chat.id, texts)
+    if response.query_result.intent.is_fallback:
+        return None
+    else:
+        text = response.query_result.fulfillment_text
+        bot.send_message(message.chat.id, text)
 
 
 if __name__ == '__main__':
