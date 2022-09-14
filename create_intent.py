@@ -3,9 +3,8 @@ from google.cloud import dialogflow
 from environs import Env
 
 
-def create_intent():
+def create_intent(project_id):
     """Create an intent of the given intent type."""
-    project_id = env('PROJECT_ID')
     with open('training_phrases.json', 'r') as file:
         phrases = file.read()
     training_phrases_parts = json.loads(phrases)
@@ -13,15 +12,15 @@ def create_intent():
     parent = dialogflow.AgentsClient.agent_path(project_id)
     training_phrases = []
     response_messages = []
-    for training_phrases_part, val in training_phrases_parts.items():
-        for item in val['questions']:
+    for training_phrases_part, phrase_item in training_phrases_parts.items():
+        for item in phrase_item['questions']:
             part = dialogflow.Intent.TrainingPhrase.Part(text=item)
             training_phrase = dialogflow.Intent.TrainingPhrase(parts=[part])
             training_phrases.append(training_phrase)
-        text = dialogflow.Intent.Message.Text(text=[val['answer']])
+        text = dialogflow.Intent.Message.Text(text=[phrase_item['answer']])
         message = dialogflow.Intent.Message(text=text)
         response_messages.append(message)
-    display_name = 'Ка!к устроиться к вам на работу'
+    display_name = 'Как устроиться к вам на работу'
     intent = dialogflow.Intent(
         display_name=display_name, training_phrases=training_phrases, messages=response_messages
     )
@@ -35,4 +34,4 @@ if __name__ == '__main__':
     env = Env()
     env.read_env()
     project_id = env('PROJECT_ID')
-    create_intent()
+    create_intent(project_id)
