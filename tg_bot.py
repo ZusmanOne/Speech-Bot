@@ -1,9 +1,9 @@
 import telebot
 from environs import Env
-from google.cloud import dialogflow
 from custom_handler import TelegramHandler
 import logging
 from define_intent import define_intent
+
 logger = logging.getLogger(__file__)
 
 env = Env()
@@ -18,8 +18,8 @@ def process_start_command(message):
 
 
 @bot.message_handler(content_types=['text'])
-def send_text_tg(message):
-    fallback,text = define_intent(message.text)
+def send_text_tg(message, project_id=env('PROJECT_ID'), session_id=env('SESSION_ID')):
+    fallback, text = define_intent(message.text, project_id, session_id)
     bot.send_message(message.chat.id, text)
 
 
@@ -28,4 +28,4 @@ if __name__ == '__main__':
     log_bot = telebot.TeleBot(tg_token)
     logger.addHandler(TelegramHandler(log_bot, chat_id))
     logger.setLevel('INFO')
-    bot.infinity_polling()
+    bot.polling()

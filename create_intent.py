@@ -10,8 +10,6 @@ def create_intent(project_id):
     training_phrases_parts = json.loads(phrases)
     intents_client = dialogflow.IntentsClient()
     parent = dialogflow.AgentsClient.agent_path(project_id)
-
-
     for training_phrases_part, phrase_item in training_phrases_parts.items():
         training_phrases = []
         response_messages = []

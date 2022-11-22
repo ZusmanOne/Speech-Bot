@@ -5,9 +5,7 @@ env = Env()
 env.read_env()
 
 
-def define_intent(text):
-    project_id = env('PROJECT_ID')
-    session_id = env('SESSION_ID')
+def define_intent(text, project_id, session_id):
     session_client = dialogflow.SessionsClient()
     session = session_client.session_path(project_id, session_id)
     text_input = dialogflow.TextInput(text=text, language_code='ru')
@@ -19,4 +17,3 @@ def define_intent(text):
         response.query_result.intent.is_fallback,
         response.query_result.fulfillment_text
     )
-
